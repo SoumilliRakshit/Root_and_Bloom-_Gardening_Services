@@ -1,3 +1,10 @@
+<img width="654" height="653" alt="image" src="https://github.com/user-attachments/assets/d7fe77e6-dcdc-412f-9850-00ea3b598a34" />
+
+
+
+
+
+
 # 🌱  Root_and_Bloom-Gardening_Services
 Root & Bloom is a hybrid gardening services and retail startup that combines professional landscaping, garden maintenance, and an online marketplace for gardening products into a single digital platform. The business focuses on delivering end-to-end gardening solutions for both residential and commercial customers while leveraging integrated digital systems to streamline operations and enhance customer experience.
 
