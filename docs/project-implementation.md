@@ -16,6 +16,7 @@
 | T012 | Customer UI feedback and responsive control states | Student A | Completed | Soumili Rakshit | 2026-09-04 | Yes | src/styles.css; editor diagnostics passed |
 | T013 | Project README and repository setup documentation | Student A | Completed | Soumili Rakshit | 2026-09-04 | Yes | README.md and .gitignore updated; package metadata aligned |
 | T014 | Customer booking progress timeline and service transparency | Student A | Completed | Soumili Rakshit | 2026-09-04 | Yes | src/App.tsx and src/styles.css; status progression and responsive view verified |
+| T015 | Extract typed persistence and CRUD data utilities | Student C | In Progress | Student C | — | Yes | src/lib/data-store.ts and App.tsx integration; Student C review and verification required |
 
 ## AI assistance notes
 - AI tools were used to assist with the implementation of high-quality interface structure, business logic and documentation.
@@ -30,3 +31,4 @@
 - Student A owns the customer workflow improvements recorded in T009-T012 and must complete the manual browser checks before claiming final verification.
 - Student A owns the repository guidance recorded in T013; the README describes the verified prototype and its production limitations.
 - Student A owns the customer-facing progress and transparency improvements recorded in T014.
+- T015 is an AI-assisted data-layer improvement prepared for Student C; it must not be marked Completed until Student C reviews the utility, integration and tests it.

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createRecord, deleteRecord, readStored, updateRecord, writeStored } from './lib/data-store';
 
 type Role = 'customer' | 'manager';
 
@@ -128,12 +129,7 @@ const initialData: BusinessData = {
 };
 
 function loadData(): BusinessData {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : initialData;
-  } catch {
-    return initialData;
-  }
+  return readStored(STORAGE_KEY, initialData);
 }
 
 function calculatePriorityScore(gardener: Gardener, customerZone: string, currentBookings: number): number {
@@ -190,7 +186,7 @@ export default function App() {
   const [productSearch, setProductSearch] = useState('');
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    writeStored(STORAGE_KEY, data);
   }, [data]);
 
   useEffect(() => {
@@ -251,7 +247,7 @@ export default function App() {
 
     setData((current) => ({
       ...current,
-      bookings: [booking, ...current.bookings],
+      bookings: createRecord(current.bookings, booking),
     }));
 
     setBookingNotes('');
@@ -262,16 +258,14 @@ export default function App() {
   const updateBookingStatus = (bookingId: string, status: Booking['status']) => {
     setData((current) => ({
       ...current,
-      bookings: current.bookings.map((booking) =>
-        booking.id === bookingId ? { ...booking, status } : booking,
-      ),
+      bookings: updateRecord(current.bookings, bookingId, { status }),
     }));
   };
 
   const cancelBooking = (bookingId: string) => {
     setData((current) => ({
       ...current,
-      bookings: current.bookings.filter((booking) => booking.id !== bookingId),
+      bookings: deleteRecord(current.bookings, bookingId),
     }));
   };
 
@@ -316,11 +310,13 @@ export default function App() {
 
     setData((current) => ({
       ...current,
-      orders: [order, ...current.orders],
-      products: current.products.map((product) => {
-        const item = items.find((entry) => entry.productId === product.id);
-        return item ? { ...product, stock: product.stock - item.quantity } : product;
-      }),
+      orders: createRecord(current.orders, order),
+      products: items.reduce(
+        (products, item) => updateRecord(products, item.productId, {
+          stock: (products.find((product) => product.id === item.productId)?.stock ?? 0) - item.quantity,
+        }),
+        current.products,
+      ),
       inventory: current.inventory.map((record) => {
         const item = items.find((entry) => entry.productId === record.productId);
         return item ? { ...record, stock: record.stock - item.quantity, lastUpdated: new Date().toISOString().slice(0, 10) } : record;
@@ -333,9 +329,7 @@ export default function App() {
   const updateInventory = (productId: string, newStock: number) => {
     setData((current) => ({
       ...current,
-      products: current.products.map((product) =>
-        product.id === productId ? { ...product, stock: newStock } : product,
-      ),
+      products: updateRecord(current.products, productId, { stock: newStock }),
       inventory: current.inventory.map((record) =>
         record.productId === productId ? { ...record, stock: newStock, lastUpdated: new Date().toISOString().slice(0, 10) } : record,
       ),
@@ -365,7 +359,7 @@ export default function App() {
 
     setData((current) => ({
       ...current,
-      products: [newProduct, ...current.products],
+      products: createRecord(current.products, newProduct),
       inventory: [{ productId: newProduct.id, stock, reorderPoint, lastUpdated: new Date().toISOString().slice(0, 10) }, ...current.inventory],
     }));
     event.currentTarget.reset();
