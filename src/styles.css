@@ -120,11 +120,27 @@ button, input, select, textarea {
 }
 
 .hero-panel { grid-column: span 12; display: flex; justify-content: space-between; align-items: center; }
+.hero-copy { margin: 10px 0 0; max-width: 520px; color: #536157; }
 .booking-panel { grid-column: span 5; }
 .shopping-panel { grid-column: span 7; }
 .list-panel { grid-column: span 6; }
 .kpi-panel { grid-column: span 12; }
 .manager-panel { grid-column: span 6; }
+
+.customer-promise {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #dfeadf;
+  border-radius: 18px;
+  background: #dfeadf;
+}
+
+.customer-promise div { display: flex; flex-direction: column; gap: 6px; padding: 16px; background: #f7fbf5; }
+.customer-promise strong { color: #244428; }
+.customer-promise span { color: #5d6d5d; font-size: 0.9rem; }
 
 .booking-form {
   display: grid;
@@ -285,6 +301,23 @@ button, input, select, textarea {
 
 .list-item p, .list-item small { margin: 4px 0 0; color: #536157; }
 
+.booking-progress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 12px;
+  max-width: 480px;
+}
+
+.booking-progress span {
+  border-top: 3px solid #dce5d8;
+  padding-top: 5px;
+  color: #879286;
+  font-size: 0.68rem;
+}
+
+.booking-progress span.complete { border-color: #4e9b54; color: #286d32; font-weight: 700; }
+
 .status-actions {
   display: flex;
   align-items: center;
@@ -358,7 +391,9 @@ button, input, select, textarea {
     align-items: flex-start;
   }
 
-  .booking-form, .add-product-form, .kpi-grid, .product-grid {
+  .booking-form, .add-product-form, .kpi-grid, .product-grid, .customer-promise {
     grid-template-columns: 1fr;
   }
+
+  .booking-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

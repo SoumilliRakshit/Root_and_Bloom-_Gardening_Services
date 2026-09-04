@@ -164,6 +164,13 @@ function recommendReorder(stock: number, reorderPoint: number) {
   return stock <= reorderPoint ? Math.max(12, reorderPoint * 2 - stock) : 0;
 }
 
+const bookingStages: Booking['status'][] = ['Pending', 'Confirmed', 'In Progress', 'Completed'];
+
+function getBookingStage(status: Booking['status']) {
+  if (status === 'Cancelled') return -1;
+  return bookingStages.indexOf(status);
+}
+
 export default function App() {
   const [data, setData] = useState<BusinessData>(() => loadData());
   const [selectedRole, setSelectedRole] = useState<Role>('customer');
@@ -416,12 +423,19 @@ export default function App() {
             <div>
               <p className="eyebrow">Customer Dashboard</p>
               <h2>Book services and shop essentials</h2>
+              <p className="hero-copy">A clear garden-care journey, from your first request to the finished visit.</p>
             </div>
             <div className="hero-stats">
               <div><span>Bookings</span><strong>{customerBookings.length}</strong></div>
               <div><span>Orders</span><strong>{customerOrders.length}</strong></div>
               <div><span>Zone</span><strong>{loggedUser.zone}</strong></div>
             </div>
+          </section>
+
+          <section className="customer-promise">
+            <div><strong>Care, without the guesswork.</strong><span>Vetted gardeners, visible booking status and stock-aware checkout.</span></div>
+            <div><strong>Every update matters.</strong><span>Your saved records remain available after a browser refresh.</span></div>
+            <div><strong>Ready for your next visit?</strong><span>Choose a service, date and zone to get an assignment.</span></div>
           </section>
 
           <section className="panel booking-panel">
@@ -514,6 +528,13 @@ export default function App() {
                         <strong>{service?.name}</strong>
                         <p>{booking.date} • {booking.zone}</p>
                         <small>Assigned to {gardener?.name}</small>
+                        {booking.status !== 'Cancelled' && (
+                          <div className="booking-progress" aria-label={`Booking progress: ${booking.status}`}>
+                            {bookingStages.map((stage, index) => (
+                              <span key={stage} className={index <= getBookingStage(booking.status) ? 'complete' : ''}>{stage}</span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       <div className="status-actions">
                         <span className={`badge ${booking.status.toLowerCase().replace(' ', '-')}`}>{booking.status}</span>

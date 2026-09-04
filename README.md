@@ -1,4 +1,14 @@
+<div align="center">
+
 # Root & Bloom Gardening Services
+
+![Status](https://img.shields.io/badge/status-working%20prototype-3d7a42?style=for-the-badge)
+![Stack](https://img.shields.io/badge/stack-React%20%2B%20TypeScript-2563eb?style=flat-square)
+![CIA](https://img.shields.io/badge/CIA%20III-ECD223--3-c98924?style=flat-square)
+
+**A customer-first garden-care and retail operations platform.**
+
+</div>
 
 Root & Bloom is a digital business information system for a gardening services
 and retail business. It connects customers with gardening services and gives
@@ -6,6 +16,21 @@ managers an operational view of bookings, revenue and inventory.
 
 This repository contains the working CIA III prototype for **Digital Business
 Systems | ECD223-3**.
+
+> **Project scope:** This repository contains a working academic prototype.
+> Features described as planned or recommended are clearly separated from the
+> implemented browser workflow.
+
+## Contents
+
+- [What the system demonstrates](#what-the-system-demonstrates)
+- [Business logic](#business-logic)
+- [Data model](#data-model)
+- [Run locally](#run-locally)
+- [Demonstration checklist](#demonstration-checklist)
+- [Repository documentation](#repository-documentation)
+- [Contribution workflow](#contribution-workflow)
+- [Limitations and next steps](#project-limitations-and-next-steps)
 
 ## What the system demonstrates
 
@@ -52,6 +77,18 @@ static screens:
 The implementation and examples are documented in
 [`docs/architecture.md`](docs/architecture.md). The relevant application logic
 is in [`src/App.tsx`](src/App.tsx).
+
+### Decision support in the dashboard
+
+The customer view turns stored records into useful decisions and feedback:
+
+- a booking receives a gardener assignment based on service fit, rating, zone
+	and workload
+- a booking timeline makes the operational status visible from request to
+	completion
+- the product view prevents customers from adding more than available stock
+- the manager inventory view receives a reorder recommendation when stock is
+	below its threshold
 
 ## Data model
 
@@ -117,6 +154,10 @@ npm run preview
 9. Change stock below its reorder point and verify the recommendation.
 10. Add a new product and confirm it appears in the catalogue.
 
+For assessment evidence, capture the inputs and outputs of each workflow rather
+than only the final screen. Useful evidence includes the validation message,
+assigned gardener, order total, changed stock value and updated booking status.
+
 ## Repository documentation
 
 - [`docs/architecture.md`](docs/architecture.md): system architecture,
@@ -150,7 +191,8 @@ implementation tracker.
 Soumili Rakshit owns the customer experience improvements on the current
 feature branch, including booking validation and feedback, persistent cart
 behaviour, stock-aware customer shopping, product search, booking cancellation,
-and related responsive interface states.
+related responsive interface states, booking progress visibility and repository
+guidance.
 
 ## Project limitations and next steps
 
