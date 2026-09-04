@@ -327,6 +327,7 @@ export default function App() {
   };
 
   const updateInventory = (productId: string, newStock: number) => {
+    if (!Number.isInteger(newStock) || newStock < 0) return;
     setData((current) => ({
       ...current,
       products: updateRecord(current.products, productId, { stock: newStock }),
@@ -345,7 +346,7 @@ export default function App() {
     const stock = Number(form.get('stock') ?? 0);
     const reorderPoint = Number(form.get('reorderPoint') ?? 5);
 
-    if (!name || price <= 0) return;
+    if (!name || price <= 0 || !Number.isInteger(stock) || stock < 0 || !Number.isInteger(reorderPoint) || reorderPoint < 0) return;
 
     const newProduct: Product = {
       id: `p-${Date.now()}`,

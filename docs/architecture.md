@@ -25,6 +25,24 @@ The system supports:
 | Business logic | JavaScript/TypeScript functions | Booking assignment, stock reorder logic, KPI aggregation |
 | Deployment approach | Static web app | Easy local hosting and future cloud deployment |
 
+### Active source structure
+
+```text
+src/
+  App.tsx                 application workflow and role views
+  main.tsx                React entry point
+  styles.css              responsive presentation styles
+  lib/data-store.ts       typed persistence and reusable CRUD helpers
+docs/
+  architecture.md         architecture and scalability source of truth
+  project-implementation.md  living work log and evidence register
+```
+
+The active Vite entry point is `src/main.tsx`. The repository also contains
+legacy TanStack/Lovable template files at the root from the original project
+generation. They are retained for history and are not imported by the active
+Vite entry point.
+
 ## 3. Current system architecture diagram
 
 ```text
@@ -92,6 +110,12 @@ The app simulates role-based access through a switch between Customer View and M
 
 ### Data storage
 The system stores data in browser LocalStorage. This allows persistent data across refreshes, which is appropriate for a prototype digital business system.
+
+The persistence boundary is implemented in `src/lib/data-store.ts`. It provides
+JSON-safe read/write functions and generic create, update and delete operations
+for records with identifiers. The application uses these helpers for the
+booking, order and product workflows, while inventory records are updated with
+the same validation boundary. Invalid or negative stock values are rejected.
 
 ### External services
 These are not fully connected in the current prototype, but they are conceptually required for a large real-world system:

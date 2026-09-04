@@ -9,8 +9,16 @@ export function readStored<T>(key: string, fallback: T): T {
   }
 }
 
+export function readCollection<T extends Identifiable>(key: string): T[] {
+  return readStored<T[]>(key, []);
+}
+
 export function writeStored<T>(key: string, value: T): void {
   localStorage.setItem(key, JSON.stringify(value));
+}
+
+export function writeCollection<T extends Identifiable>(key: string, records: T[]): void {
+  writeStored(key, records);
 }
 
 export function createRecord<T extends Identifiable>(records: T[], record: T): T[] {
@@ -23,4 +31,8 @@ export function updateRecord<T extends Identifiable>(records: T[], id: string, c
 
 export function deleteRecord<T extends Identifiable>(records: T[], id: string): T[] {
   return records.filter((record) => record.id !== id);
+}
+
+export function hasRecord<T extends Identifiable>(records: T[], id: string): boolean {
+  return records.some((record) => record.id === id);
 }
