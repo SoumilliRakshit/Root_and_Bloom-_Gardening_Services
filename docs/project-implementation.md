@@ -20,6 +20,7 @@
 | T016 | Organize active source structure and document legacy files | Student C | Completed | Soumili Rakshit | 2026-09-04 | Yes | docs/architecture.md source-structure section and src/lib boundary |
 | T017 | Add data-integrity validation for inventory CRUD | Student C | Completed | Soumili Rakshit | 2026-09-04 | Yes | src/App.tsx rejects negative/non-integer stock and reorder values |
 | T018 | Verify Student C persistence and CRUD integration | Student C | In Progress | Soumili Rakshit | 2026-09-04 | Yes | Editor diagnostics and git diff checks passed; browser workflow verification pending |
+| T019 | Improve README project presentation and evidence mapping | Student C | Completed | Soumili Rakshit | 2026-09-04 | Yes | README.md updated with project image, badges, workflows, data-layer explanation and CIA III evidence map |
 
 ## AI assistance notes
 - AI tools were used to assist with the implementation of high-quality interface structure, business logic and documentation.
@@ -36,3 +37,4 @@
 - Student A owns the customer-facing progress and transparency improvements recorded in T014.
 - T015-T017 are AI-assisted Student C tasks reviewed and integrated by Soumili Rakshit.
 - T018 remains In Progress until the browser workflow and production build are verified locally.
+- T019 documents the README and repository presentation work completed by Student C.

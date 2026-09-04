@@ -2,13 +2,25 @@
 
 # Root & Bloom Gardening Services
 
+<img src="hero-garden.jpg" alt="A healthy garden maintained by Root & Bloom" width="900" />
+
 ![Status](https://img.shields.io/badge/status-working%20prototype-3d7a42?style=for-the-badge)
 ![Stack](https://img.shields.io/badge/stack-React%20%2B%20TypeScript-2563eb?style=flat-square)
 ![CIA](https://img.shields.io/badge/CIA%20III-ECD223--3-c98924?style=flat-square)
+![Storage](https://img.shields.io/badge/storage-LocalStorage-f59e0b?style=flat-square)
 
-**A customer-first garden-care and retail operations platform.**
+### 🌱 A customer-first garden-care and retail operations platform
+
+Book a trusted gardener, shop garden essentials, and give managers the
+information they need to keep daily operations moving.
 
 </div>
+
+<br />
+
+| 👤 Customer portal | 🧭 Manager workspace | 💾 Persistent prototype data | 🧠 Business processing |
+| --- | --- | --- | --- |
+| Book, track and cancel services | Monitor jobs and stock | LocalStorage-backed records | Matching and reorder decisions |
 
 Root & Bloom is a digital business information system for a gardening services
 and retail business. It connects customers with gardening services and gives
@@ -41,6 +53,15 @@ Customer input -> React application logic -> persistent LocalStorage data
 					-> booking/order result -> customer or manager output
 ```
 
+### At a glance
+
+| Area | Implemented capability | Business value |
+| --- | --- | --- |
+| Customer experience | Booking, cart, checkout, history and progress timeline | Reduces friction from service discovery to confirmation |
+| Operations | Booking status updates and inventory editing | Gives the manager a single operational view |
+| Decision support | Gardener ranking and reorder recommendations | Converts records into useful business decisions |
+| Data management | Eight related collections with persistent browser storage | Demonstrates collection, processing, storage and retrieval |
+
 ### Customer operations
 
 - Select a customer identity and zone
@@ -62,6 +83,20 @@ Customer input -> React application logic -> persistent LocalStorage data
 - Update product stock levels
 - Identify low-stock products and recommended reorder quantities
 - Add new products to the catalogue
+
+### Service journey
+
+```text
+Choose service -> Select future date and zone -> Validate request
+	-> Match available gardener -> Confirm booking -> Track progress
+```
+
+### Retail journey
+
+```text
+Search catalogue -> Add within available stock -> Calculate total
+	-> Validate stock again -> Create order -> Reduce inventory -> Show history
+```
 
 ## Business logic
 
@@ -108,6 +143,34 @@ these entities:
 
 Data is persisted in the browser using the `root-bloom-cia3-data` key. The
 shopping cart uses `root-bloom-cart`.
+
+### Data-layer implementation
+
+The active data boundary is [`src/lib/data-store.ts`](src/lib/data-store.ts).
+It provides:
+
+- safe JSON read and write operations
+- generic create, update and delete functions for identified records
+- reusable collection helpers instead of repeating storage logic in UI code
+- validation at the inventory boundary so stock cannot become negative or use
+	fractional values
+
+The application uses this boundary for booking updates, booking deletion,
+order creation, product stock updates and new product creation. This is the
+Student C data-layer contribution and is recorded in the implementation log.
+
+## Assessment evidence map
+
+| CIA III requirement | Evidence in this repository |
+| --- | --- |
+| Two user roles | Customer View and Manager View in [`src/App.tsx`](src/App.tsx) |
+| Three or more customer operations | Booking, product search/cart, checkout, history and cancellation |
+| Three or more manager operations | Status updates, inventory editing, product creation and KPI monitoring |
+| Persistent data | `root-bloom-cia3-data` and `root-bloom-cart` LocalStorage records |
+| Six or more entities | Users, Services, Gardeners, Bookings, Products, Orders, Order items and Inventory |
+| Business algorithm | Gardener priority scoring and inventory reorder recommendation |
+| Architecture and scale | [`docs/architecture.md`](docs/architecture.md) |
+| Work log and contribution evidence | [`docs/project-implementation.md`](docs/project-implementation.md) |
 
 ## Technology
 
@@ -169,6 +232,19 @@ The implementation tracker is the source of truth for task status. Tasks should
 only be marked `Completed` after the responsible student has tested them and
 recorded evidence.
 
+## Team ownership
+
+| Member | Technical ownership |
+| --- | --- |
+| Student A | Customer booking, shopping experience and customer-facing feedback |
+| Student B | Manager workflow, operational business rules and service algorithms |
+| Soumili Rakshit (Student C) | Persistence boundary, typed CRUD utilities, data integrity, architecture and scalability documentation |
+
+Each member should use their own GitHub identity, work through a feature
+branch, open a pull request, and record the actual verification evidence in
+the implementation tracker. A commit count is not a substitute for a working
+feature or a viva explanation.
+
 ## Contribution workflow
 
 Use a personal branch and a GitHub account-linked email for each contribution:
@@ -194,6 +270,14 @@ behaviour, stock-aware customer shopping, product search, booking cancellation,
 related responsive interface states, booking progress visibility and repository
 guidance.
 
+## Student C contribution
+
+Soumili Rakshit owns the data and technical documentation work on the current
+feature branch. This includes the typed LocalStorage persistence boundary,
+reusable CRUD helpers, inventory data-integrity validation, active-source
+organization notes, architecture updates, quantitative scalability analysis,
+security planning, recovery planning and implementation evidence.
+
 ## Project limitations and next steps
 
 This is an academic prototype. LocalStorage provides persistence for browser
@@ -201,3 +285,16 @@ demonstration, but it is not a multi-user production database. A production
 release should replace it with an authenticated API, PostgreSQL, server-side
 inventory transactions, payment-provider webhooks, encrypted secrets,
 automated tests and cloud monitoring.
+
+### Planned production evolution
+
+```mermaid
+flowchart LR
+	C[Customer or Manager] --> CDN[CloudFront]
+	CDN --> UI[S3-hosted React UI]
+	UI --> API[Load-balanced API]
+	API --> CACHE[Redis cache]
+	API --> DB[(PostgreSQL / RDS)]
+	API --> FILES[S3 media storage]
+	API --> OBS[Monitoring and audit logs]
+```
