@@ -169,6 +169,7 @@ Student C data-layer contribution and is recorded in the implementation log.
 | Persistent data | `root-bloom-cia3-data` and `root-bloom-cart` LocalStorage records |
 | Six or more entities | Users, Services, Gardeners, Bookings, Products, Orders, Order items and Inventory |
 | Business algorithm | Gardener priority scoring and inventory reorder recommendation |
+| Live analytics | Booking pipeline, inventory health and customer care pulse charts |
 | Architecture and scale | [`docs/architecture.md`](docs/architecture.md) |
 | Work log and contribution evidence | [`docs/project-implementation.md`](docs/project-implementation.md) |
 

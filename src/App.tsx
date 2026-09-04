@@ -212,6 +212,22 @@ export default function App() {
     return { totalRevenue, pending, avgRating: Number(avgRating.toFixed(2)) };
   }, [data]);
 
+  const bookingAnalytics = useMemo(() => {
+    const statuses: Booking['status'][] = ['Pending', 'Confirmed', 'In Progress', 'Completed', 'Cancelled'];
+    return statuses.map((status) => ({
+      status,
+      count: data.bookings.filter((booking) => booking.status === status).length,
+    }));
+  }, [data.bookings]);
+
+  const inventoryAnalytics = useMemo(() => ({
+    healthy: data.products.filter((product) => product.stock > product.reorderPoint).length,
+    needsAttention: data.products.filter((product) => product.stock <= product.reorderPoint).length,
+    outOfStock: data.products.filter((product) => product.stock === 0).length,
+  }), [data.products]);
+
+  const customerCareScore = Math.min(100, customerBookings.length * 25 + customerOrders.length * 15);
+
   const handleBookService = (event: React.FormEvent) => {
     event.preventDefault();
     const selectedService = data.services.find((service) => service.id === serviceId);
@@ -427,6 +443,19 @@ export default function App() {
             </div>
           </section>
 
+          <section className="panel care-pulse">
+            <div>
+              <p className="eyebrow">Your care pulse</p>
+              <h3>Garden support activity</h3>
+              <p>Based on your saved bookings and completed shopping activity.</p>
+            </div>
+            <div className="pulse-meter">
+              <div className="pulse-track"><span style={{ width: `${customerCareScore}%` }} /></div>
+              <strong>{customerCareScore}%</strong>
+            </div>
+            <div className="pulse-legend"><span><i className="dot-green" /> Services booked</span><span><i className="dot-gold" /> Retail activity</span><span><i className="dot-blue" /> Records saved</span></div>
+          </section>
+
           <section className="customer-promise">
             <div><strong>Care, without the guesswork.</strong><span>Vetted gardeners, visible booking status and stock-aware checkout.</span></div>
             <div><strong>Every update matters.</strong><span>Your saved records remain available after a browser refresh.</span></div>
@@ -581,6 +610,48 @@ export default function App() {
               <div className="kpi-card">
                 <span>Avg. gardener rating</span>
                 <strong>{managerSummary.avgRating}/5</strong>
+              </div>
+            </div>
+          </section>
+
+          <section className="panel analytics-panel">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Management information</p>
+                <h3>Live operations picture</h3>
+              </div>
+              <span className="updated-label">Derived from current records</span>
+            </div>
+            <div className="analytics-grid">
+              <div className="chart-card">
+                <h4>Booking pipeline</h4>
+                <div className="bar-chart">
+                  {bookingAnalytics.map(({ status, count }) => (
+                    <div key={status} className="bar-item">
+                      <div className="bar-value">{count}</div>
+                      <div className="bar-track"><span style={{ height: `${Math.min(100, Math.max(8, count * 34))}px` }} /></div>
+                      <small>{status}</small>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="chart-card">
+                <h4>Inventory health</h4>
+                <div className="donut-wrap">
+                  <div
+                    className="donut"
+                    style={{
+                      background: `radial-gradient(circle at center, #fbfdf9 52%, transparent 54%), conic-gradient(#4e9b54 0 ${data.products.length ? (inventoryAnalytics.healthy / data.products.length) * 100 : 0}%, #e4ad3d 0 ${data.products.length ? ((inventoryAnalytics.healthy + inventoryAnalytics.needsAttention) / data.products.length) * 100 : 0}%, #c45d58 0 100%)`,
+                    }}
+                  >
+                    <strong>{data.products.length}</strong><small>SKUs</small>
+                  </div>
+                  <div className="chart-legend">
+                    <span><i className="dot-green" /> Healthy <strong>{inventoryAnalytics.healthy}</strong></span>
+                    <span><i className="dot-gold" /> Reorder needed <strong>{inventoryAnalytics.needsAttention}</strong></span>
+                    <span><i className="dot-red" /> Out of stock <strong>{inventoryAnalytics.outOfStock}</strong></span>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
